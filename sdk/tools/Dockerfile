@@ -10,7 +10,7 @@ RUN cd /opt \
     && rm android-sdk-tools.zip
 
 RUN apt-get update \
-    && apt-get install -y sudo software-properties-common build-essential ruby-full --no-install-recommends \
+    && apt-get install -y sudo software-properties-common build-essential ruby-full lib32stdc++6 --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN gem install fastlane -NV
