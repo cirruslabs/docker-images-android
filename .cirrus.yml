@@ -2,6 +2,16 @@ environment:
   DOCKER_USER_NAME: ENCRYPTED[b75ee3bd0bd835d7d74d2598b54fee3d0b743919a48c87829bf99fab6dd9a296cce88bfa81dd9d660d7c3acbb6e589ce]
   DOCKER_PASSWORD: ENCRYPTED[dcb999313b7216ea7fb1181de5fdac8cdba6ea0d8fdca287f2cc1713c110dbaa9fceafb5ffe0fe8dfde7bbc520abdfae]
 
-android_docker_builder:
-  build_script: ./build_docker.sh
-  push_script: ./push_docker.sh
+docker_builder:
+  name: Linux
+  build_tools_script: docker build --tag cirrusci/android-sdk:tools sdk/tools
+  build_sdk_script: docker build --tag cirrusci/android-sdk:28 sdk/28
+  push_script: ./scripts/push_docker.sh
+
+docker_builder:
+  name: Windows
+  platform: windows
+  os_version: 2016
+  build_tools_script: docker build --tag cirrusci/android-sdk:tools-windowsservercore-ltsc2016 sdk\tools-windowsservercore-ltsc2016
+  build_sdk_script: docker build --tag cirrusci/android-sdk:28-windowsservercore-ltsc2016 sdk\28-windowsservercore-ltsc2016
+  push_script: ./scripts/push_docker.bat
