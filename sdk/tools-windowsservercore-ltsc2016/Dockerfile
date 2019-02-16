@@ -10,7 +10,7 @@ RUN mkdir $env:ANDROID_HOME; \
     Expand-Archive android_sdk_tools.zip -DestinationPath C:\Android\ ; \
     Remove-Item -Path android_sdk_tools.zip
 
-RUN setx PATH "%PATH%;%ANDROID_HOME%\\tools;%ANDROID_HOME%\\tools\\bin;%ANDROID_HOME%\\platform-tools"
+RUN setx PATH "%PATH%;C:\\Android\\tools;C:\\Android\\tools\\bin;C:\\Android\\platform-tools"
 
 RUN echo y | sdkmanager.bat --licenses
 
