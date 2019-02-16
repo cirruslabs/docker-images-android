@@ -12,7 +12,7 @@ RUN mkdir $env:ANDROID_HOME; \
 
 ENV PATH ${PATH}:${ANDROID_HOME}\\tools:${ANDROID_HOME}\\tools\\bin:${ANDROID_HOME}\\platform-tools
 
-RUN echo y |  C:\\Android\\tools\\bin\\sdkmanager.bat --licenses
+RUN echo y | C:\\Android\\tools\\bin\\sdkmanager.bat --licenses
 
 RUN C:\\Android\\tools\\bin\\sdkmanager.bat tools ; \
     C:\\Android\\tools\\bin\\sdkmanager.bat platform-tools ; \
