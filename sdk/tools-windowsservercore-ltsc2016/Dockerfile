@@ -5,8 +5,9 @@ ENV ANDROID_SDK_TOOLS_VERSION 4333796
 
 RUN powershell.exe -Command \
     choco install -y jdk8; \
-    Remove-Item C:\ProgramData\chocolatey\logs -Force -Recurse; \
-    refreshenv; \
+    Remove-Item C:\ProgramData\chocolatey\logs -Force -Recurse
+
+RUN powershell.exe -Command \
     mkdir $env:ANDROID_HOME; \
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
     (New-Object System.Net.WebClient).DownloadFile(('https://dl.google.com/android/repository/sdk-tools-windows-{0}.zip' -f $env:ANDROID_SDK_TOOLS_VERSION), 'android_sdk_tools.zip') ; \
