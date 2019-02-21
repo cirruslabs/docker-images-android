@@ -21,6 +21,4 @@ RUN powershell.exe -Command \
 RUN echo y | sdkmanager.bat --licenses
 
 RUN powershell.exe -Command \
-    sdkmanager.bat tools ; \
-    sdkmanager.bat platform-tools ; \
-    sdkmanager.bat emulator ;
+    echo y | sdkmanager.bat tools  platform-tools emulator
