@@ -18,7 +18,14 @@ RUN powershell.exe -Command \
     Remove-Item -Path android_sdk_tools.zip ; \
     [Environment]::SetEnvironmentVariable('Path', $env:Path+';' + $env:ANDROID_HOME+'\tools;' + $env:ANDROID_HOME+'\tools\bin;' + $env:ANDROID_HOME+'\platform-tools', [EnvironmentVariableTarget]::Machine)
 
-RUN echo y | sdkmanager.bat --licenses
 
 RUN powershell.exe -Command \
-    echo y | sdkmanager.bat tools  platform-tools emulator
+    mkdir -p C:\Android\licenses; \
+    Set-Content -Value "`n601085b94cd77f0b54ff86406957099ebe79c4d6" -Path "C:\Android\licenses\android-googletv-license"; \
+    Set-Content -Value "`n24333f8a63b6825ea9c5514f83c2829b004d1fee" -Path C:\Android\licenses\android-sdk-license; \
+    Set-Content -Value "`n84831b9409646a918e30573bab4c9c91346d8abd" -Path C:\Android\licenses\android-sdk-preview-license; \
+    Set-Content -Value "`n33b6a2b64607f11b759f320ef9dff4ae5c47d97a" -Path C:\Android\licenses\google-gdk-license; \
+    Set-Content -Value "`nd975f751698a77b662f1254ddbeed3901e976f5a" -Path C:\Android\licenses\intel-android-extra-license; \
+    Set-Content -Value "`ne9acab5b5fbb560a72cfaecce8946896ff6aab9d" -Path C:\Android\licenses\mips-android-sysimage-license
+
+RUN sdkmanager.bat tools platform-tools emulator
