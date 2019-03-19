@@ -1,6 +1,7 @@
 FROM openjdk:8-jdk
 
 ENV ANDROID_HOME /opt/android-sdk-linux
+ENV ANDROID_SDK_ROOT $ANDROID_HOME
 # comes from https://developer.android.com/studio/
 ENV ANDROID_SDK_TOOLS_VERSION 4333796
 
