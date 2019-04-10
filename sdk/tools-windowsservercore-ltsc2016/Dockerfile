@@ -27,6 +27,8 @@ RUN powershell.exe -Command \
     Set-Content -Value "`n84831b9409646a918e30573bab4c9c91346d8abd" -Path C:\Android\licenses\android-sdk-preview-license; \
     Set-Content -Value "`n33b6a2b64607f11b759f320ef9dff4ae5c47d97a" -Path C:\Android\licenses\google-gdk-license; \
     Set-Content -Value "`nd975f751698a77b662f1254ddbeed3901e976f5a" -Path C:\Android\licenses\intel-android-extra-license; \
-    Set-Content -Value "`ne9acab5b5fbb560a72cfaecce8946896ff6aab9d" -Path C:\Android\licenses\mips-android-sysimage-license
+    Set-Content -Value "`ne9acab5b5fbb560a72cfaecce8946896ff6aab9d" -Path C:\Android\licenses\mips-android-sysimage-license; \
+    git config --global user.email "support@cirruslabs.org"; \
+    git config --global user.name "Cirrus CI";
 
 RUN sdkmanager.bat tools platform-tools emulator
