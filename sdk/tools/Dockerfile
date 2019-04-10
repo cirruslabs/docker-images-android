@@ -30,7 +30,9 @@ RUN echo "Adding cirrus user and group" \
         && useradd --system --uid 1000 --shell /bin/bash --create-home cirrus \
         && adduser cirrus sudo \
         && chown --recursive cirrus:cirrus /home/cirrus \
-        && chown --recursive cirrus:cirrus ${ANDROID_HOME}
+        && chown --recursive cirrus:cirrus ${ANDROID_HOME} \
+        && git config --global user.email "support@cirruslabs.org" \
+        && git config --global user.name "Cirrus CI"
 
 ENV HOME /home/cirrus
 
