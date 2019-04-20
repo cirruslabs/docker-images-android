@@ -3,8 +3,8 @@ FROM cirrusci/windowsservercore:2016
 ENV ANDROID_HOME C:\\Android
 ENV ANDROID_SDK_ROOT $ANDROID_HOME
 ENV ANDROID_SDK_TOOLS_VERSION 4333796
-ENV JAVA_HOME C:\\Program Files\\Java\\jdk1.8.0_201
-ENV JAVA_VERSION 8.0.201
+ENV JAVA_HOME C:\\Program Files\\Java\\jdk1.8.0_211
+ENV JAVA_VERSION 8.0.211
 
 RUN powershell.exe -Command \
     choco install -y jdk8 --version $env:JAVA_VERSION; \
