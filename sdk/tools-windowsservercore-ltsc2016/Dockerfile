@@ -22,7 +22,7 @@ RUN powershell.exe -Command \
 
 RUN powershell.exe -Command \
     mkdir -p C:\Android\licenses; \
-    Set-Content -Value "`n601085b94cd77f0b54ff86406957099ebe79c4d6" -Path "C:\Android\licenses\android-googletv-license"; \
+    Set-Content -Value "`n601085b94cd77f0b54ff86406957099ebe79c4d6" -Path C:\Android\licenses\android-googletv-license; \
     Set-Content -Value "`n24333f8a63b6825ea9c5514f83c2829b004d1fee" -Path C:\Android\licenses\android-sdk-license; \
     Set-Content -Value "`n84831b9409646a918e30573bab4c9c91346d8abd" -Path C:\Android\licenses\android-sdk-preview-license; \
     Set-Content -Value "`n33b6a2b64607f11b759f320ef9dff4ae5c47d97a" -Path C:\Android\licenses\google-gdk-license; \
