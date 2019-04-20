@@ -29,6 +29,7 @@ RUN sdkmanager emulator
 RUN echo "Adding cirrus user and group" \
         && useradd --system --uid 1000 --shell /bin/bash --create-home cirrus \
         && adduser cirrus sudo \
+        && mkdir -p /home/cirrus/.android \
         && touch /home/cirrus/.android/repositories.cfg \
         && chown --recursive cirrus:cirrus /home/cirrus \
         && chown --recursive cirrus:cirrus ${ANDROID_HOME} \
