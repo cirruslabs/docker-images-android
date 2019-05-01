@@ -22,9 +22,12 @@ ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}
 
 RUN yes | sdkmanager --licenses
 
-RUN sdkmanager tools
-RUN sdkmanager platform-tools
-RUN sdkmanager emulator
+RUN wget -O /usr/bin/android-wait-for-emulator https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/community-cookbooks/android-sdk/files/default/android-wait-for-emulator && \
+    chmod +x /usr/bin/android-wait-for-emulator && \
+    touch /root/.android/repositories.cfg && \
+    sdkmanager tools && \
+    sdkmanager platform-tools &&\
+    sdkmanager emulator
 
 RUN echo "Adding cirrus user and group" \
         && useradd --system --uid 1000 --shell /bin/bash --create-home cirrus \
