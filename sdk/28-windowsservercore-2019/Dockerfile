@@ -1,4 +1,4 @@
-FROM cirrusci/android-sdk:tools-windowsservercore-ltsc2016
+FROM cirrusci/android-sdk:tools-windowsservercore-2019
 
 ENV ANDROID_PLATFORM_VERSION 28
 ENV ANDROID_BUILD_TOOLS_VERSION 28.0.3

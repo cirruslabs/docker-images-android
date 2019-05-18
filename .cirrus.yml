@@ -11,7 +11,7 @@ docker_builder:
 docker_builder:
   name: Windows
   platform: windows
-  os_version: 2016
-  build_tools_script: docker build --tag cirrusci/android-sdk:tools-windowsservercore-ltsc2016 sdk\tools-windowsservercore-ltsc2016
-  build_sdk_script: docker build --tag cirrusci/android-sdk:28-windowsservercore-ltsc2016 sdk\28-windowsservercore-ltsc2016
+  os_version: 2019
+  build_tools_script: docker build --tag cirrusci/android-sdk:tools-windowsservercore-2019 sdk\tools-windowsservercore-2019
+  build_sdk_script: docker build --tag cirrusci/android-sdk:28-windowsservercore-2019 sdk\28-windowsservercore-2019
   push_script: ./scripts/push_docker.bat
