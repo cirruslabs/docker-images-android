@@ -1,4 +1,4 @@
-FROM cirrusci/windowsservercore:2016
+FROM cirrusci/windowsservercore:2019
 
 ENV ANDROID_HOME C:\\Android
 ENV ANDROID_SDK_ROOT $ANDROID_HOME
@@ -9,7 +9,6 @@ ENV JAVA_VERSION 8.0.211
 RUN powershell.exe -Command \
     choco install -y jdk8 --version $env:JAVA_VERSION; \
     Remove-Item C:\ProgramData\chocolatey\logs -Force -Recurse
-
 
 RUN powershell.exe -Command \
     mkdir $env:ANDROID_HOME; \
