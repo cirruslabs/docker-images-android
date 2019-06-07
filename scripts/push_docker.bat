@@ -6,7 +6,7 @@ IF not "%CIRRUS_BRANCH%" == "master" GOTO NOTMASTER
 docker login --username "%DOCKER_USER_NAME%" --password "%DOCKER_PASSWORD%"
 
 docker push cirrusci/android-sdk:tools-windowsservercore-2019
-docker push cirrusci/android-sdk:28-windowsservercore-2019
+docker push cirrusci/android-sdk:29-windowsservercore-2019
 
 GOTO END
 :NOTMASTER

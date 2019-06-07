@@ -10,4 +10,4 @@ fi
 docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
 
 docker push cirrusci/android-sdk:tools
-docker push cirrusci/android-sdk:28
+docker push cirrusci/android-sdk:29
