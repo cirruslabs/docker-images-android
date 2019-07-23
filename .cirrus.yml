@@ -9,6 +9,7 @@ docker_builder:
   push_script: ./scripts/push_docker.sh
 
 docker_builder:
+  skip: !changesInclude('**/*windows*/**')
   name: Windows
   platform: windows
   os_version: 2019
