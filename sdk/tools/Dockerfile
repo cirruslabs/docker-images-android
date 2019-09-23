@@ -2,44 +2,38 @@ FROM openjdk:8-jdk
 
 ENV ANDROID_HOME /opt/android-sdk-linux
 ENV ANDROID_SDK_ROOT $ANDROID_HOME
+ENV HOME /home/cirrus
+
 # comes from https://developer.android.com/studio/
 ENV ANDROID_SDK_TOOLS_VERSION 4333796
+
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 RUN cd /opt \
     && wget -q https://dl.google.com/android/repository/sdk-tools-linux-$ANDROID_SDK_TOOLS_VERSION.zip -O android-sdk-tools.zip \
     && unzip -q android-sdk-tools.zip -d ${ANDROID_HOME} \
-    && rm android-sdk-tools.zip
-
-RUN apt-get update \
+    && rm android-sdk-tools.zip \
+    && apt-get update \
     && apt-get install -y sudo software-properties-common build-essential ruby-full lib32stdc++6 libpulse0 libglu1-mesa --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN gem install fastlane -NV
-
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
-
-RUN yes | sdkmanager --licenses
-
-RUN wget -O /usr/bin/android-wait-for-emulator https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/community-cookbooks/android-sdk/files/default/android-wait-for-emulator && \
-    chmod +x /usr/bin/android-wait-for-emulator && \
-    touch /root/.android/repositories.cfg && \
-    sdkmanager tools && \
-    sdkmanager platform-tools &&\
-    sdkmanager emulator
-
-RUN echo "Adding cirrus user and group" \
-        && useradd --system --uid 1000 --shell /bin/bash --create-home cirrus \
-        && adduser cirrus sudo \
-        && mkdir -p /home/cirrus/.android \
-        && touch /home/cirrus/.android/repositories.cfg \
-        && chown --recursive cirrus:cirrus /home/cirrus \
-        && chown --recursive cirrus:cirrus ${ANDROID_HOME} \
-        && git config --global user.email "support@cirruslabs.org" \
-        && git config --global user.name "Cirrus CI"
-
-ENV HOME /home/cirrus
+    && rm -rf /var/lib/apt/lists/* \
+    && gem install fastlane -NV \
+    && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && yes | sdkmanager --licenses \
+    && wget -O /usr/bin/android-wait-for-emulator https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/community-cookbooks/android-sdk/files/default/android-wait-for-emulator \
+    && chmod +x /usr/bin/android-wait-for-emulator \
+    && touch /root/.android/repositories.cfg \
+    && sdkmanager tools \
+    && sdkmanager platform-tools \
+    && sdkmanager emulator \
+    && echo "Adding cirrus user and group" \
+    && useradd --system --uid 1000 --shell /bin/bash --create-home cirrus \
+    && adduser cirrus sudo \
+    && mkdir -p /home/cirrus/.android \
+    && touch /home/cirrus/.android/repositories.cfg \
+    && chown --recursive cirrus:cirrus /home/cirrus \
+    && chown --recursive cirrus:cirrus ${ANDROID_HOME} \
+    && git config --global user.email "support@cirruslabs.org" \
+    && git config --global user.name "Cirrus CI"
 
 USER cirrus
 WORKDIR /home/cirrus

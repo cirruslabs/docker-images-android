@@ -8,18 +8,13 @@ ENV JAVA_VERSION 8.0.211
 
 RUN powershell.exe -Command \
     choco install -y jdk8 --version $env:JAVA_VERSION; \
-    Remove-Item C:\ProgramData\chocolatey\logs -Force -Recurse
-
-RUN powershell.exe -Command \
+    Remove-Item C:\ProgramData\chocolatey\logs -Force -Recurse \
     mkdir $env:ANDROID_HOME; \
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
     (New-Object System.Net.WebClient).DownloadFile(('https://dl.google.com/android/repository/sdk-tools-windows-{0}.zip' -f $env:ANDROID_SDK_TOOLS_VERSION), 'android_sdk_tools.zip') ; \
     Expand-Archive android_sdk_tools.zip -DestinationPath C:\Android\ ; \
     Remove-Item -Path android_sdk_tools.zip ; \
-    [Environment]::SetEnvironmentVariable('Path', $env:Path+';' + $env:ANDROID_HOME+'\tools;' + $env:ANDROID_HOME+'\tools\bin;' + $env:ANDROID_HOME+'\platform-tools', [EnvironmentVariableTarget]::Machine)
-
-
-RUN powershell.exe -Command \
+    [Environment]::SetEnvironmentVariable('Path', $env:Path+';' + $env:ANDROID_HOME+'\tools;' + $env:ANDROID_HOME+'\tools\bin;' + $env:ANDROID_HOME+'\platform-tools', [EnvironmentVariableTarget]::Machine) \
     mkdir -p C:\Android\licenses; \
     Set-Content -Value "`n601085b94cd77f0b54ff86406957099ebe79c4d6" -Path C:\Android\licenses\android-googletv-license; \
     Set-Content -Value "`n24333f8a63b6825ea9c5514f83c2829b004d1fee" -Path C:\Android\licenses\android-sdk-license; \
