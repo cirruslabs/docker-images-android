@@ -15,6 +15,8 @@ RUN cd /opt \
     && rm android-sdk-tools.zip \
     && apt-get update \
     && apt-get install -y sudo software-properties-common build-essential ruby-full lib32stdc++6 libpulse0 libglu1-mesa --no-install-recommends \
+    # for x86 emulators
+    && apt-get install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
     && rm -rf /var/lib/apt/lists/* \
     && gem install fastlane -NV \
     && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
