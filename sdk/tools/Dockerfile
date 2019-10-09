@@ -12,7 +12,7 @@ ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}
 RUN cd /opt \
     && apt-get update \
     && apt-get install -y openjdk-8-jdk \
-    && apt-get install -y sudo wget software-properties-common build-essential ruby-full lib32stdc++6 libpulse0 libglu1-mesa --no-install-recommends \
+    && apt-get install -y sudo wget zip unzip software-properties-common build-essential ruby-full lib32stdc++6 libpulse0 libglu1-mesa --no-install-recommends \
     # for x86 emulators
     && apt-get install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
     && rm -rf /var/lib/apt/lists/* \
