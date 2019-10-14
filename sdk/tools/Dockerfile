@@ -1,21 +1,27 @@
 FROM ubuntu:bionic
 
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV ANDROID_SDK_ROOT $ANDROID_HOME
-ENV HOME /home/cirrus
+ENV ANDROID_HOME=/opt/android-sdk-linux \
+    HOME=/home/cirrus \
+    LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8 \
+    LANGUAGE=en_US:en
+
+ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
+    PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 # comes from https://developer.android.com/studio/
 ENV ANDROID_SDK_TOOLS_VERSION 4333796
 
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
-
 RUN cd /opt \
     && apt-get update \
     && apt-get install -y openjdk-8-jdk \
-    && apt-get install -y sudo wget zip unzip git software-properties-common build-essential ruby-full lib32stdc++6 libpulse0 libglu1-mesa --no-install-recommends \
+    && apt-get install -y sudo wget zip unzip git curl software-properties-common build-essential ruby-full lib32stdc++6 libstdc++6 libpulse0 libglu1-mesa locales lcov --no-install-recommends \
     # for x86 emulators
     && apt-get install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
     && rm -rf /var/lib/apt/lists/* \
+    && sudo sh -c 'echo "en_US.UTF-8 UTF-8" > /etc/locale.gen' \
+    && sudo locale-gen \
+    && sudo update-locale LANG=en_US.UTF-8 \
     && wget -q https://dl.google.com/android/repository/sdk-tools-linux-$ANDROID_SDK_TOOLS_VERSION.zip -O android-sdk-tools.zip \
     && unzip -q android-sdk-tools.zip -d ${ANDROID_HOME} \
     && rm android-sdk-tools.zip \
