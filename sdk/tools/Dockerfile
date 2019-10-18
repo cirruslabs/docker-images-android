@@ -15,7 +15,7 @@ ENV ANDROID_SDK_TOOLS_VERSION 4333796
 RUN cd /opt \
     && apt-get update \
     && apt-get install -y openjdk-8-jdk \
-    && apt-get install -y sudo wget zip unzip git openssh-client curl software-properties-common build-essential ruby-full lib32stdc++6 libstdc++6 libpulse0 libglu1-mesa locales lcov --no-install-recommends \
+    && apt-get install -y sudo wget zip unzip git openssh-client curl software-properties-common build-essential ruby-full ruby-bundler lib32stdc++6 libstdc++6 libpulse0 libglu1-mesa locales lcov --no-install-recommends \
     # for x86 emulators
     && apt-get install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
     && rm -rf /var/lib/apt/lists/* \
