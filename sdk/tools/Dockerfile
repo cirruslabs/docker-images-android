@@ -10,7 +10,7 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
     PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 # comes from https://developer.android.com/studio/
-ENV ANDROID_SDK_TOOLS_VERSION 4333796
+ENV ANDROID_SDK_TOOLS_VERSION 6200805
 
 RUN cd /opt \
     && apt-get update \
