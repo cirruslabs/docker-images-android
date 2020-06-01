@@ -9,8 +9,8 @@ ENV ANDROID_HOME=/opt/android-sdk-linux \
 ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
     PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/tools/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
 
-# comes from https://developer.android.com/studio/
-ENV ANDROID_SDK_TOOLS_VERSION 6200805
+# comes from https://developer.android.com/studio/#command-tools
+ENV ANDROID_SDK_TOOLS_VERSION 6514223
 
 RUN set -o xtrace \
     && cd /opt \
@@ -32,7 +32,6 @@ RUN set -o xtrace \
     && wget -O /usr/bin/android-wait-for-emulator https://raw.githubusercontent.com/travis-ci/travis-cookbooks/master/community-cookbooks/android-sdk/files/default/android-wait-for-emulator \
     && chmod +x /usr/bin/android-wait-for-emulator \
     && touch /root/.android/repositories.cfg \
-    && sdkmanager tools \
     && sdkmanager platform-tools \
     && sdkmanager emulator \
     && echo "Adding cirrus user and group" \
