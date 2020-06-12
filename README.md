@@ -5,4 +5,6 @@
 [![](https://images.microbadger.com/badges/version/cirrusci/android-sdk:tools.svg)](https://microbadger.com/images/cirrusci/android-sdk:tools) [![](https://images.microbadger.com/badges/image/cirrusci/android-sdk:tools.svg)](https://microbadger.com/images/cirrusci/android-sdk:tools)
 
 [![](https://images.microbadger.com/badges/version/cirrusci/android-sdk:29.svg)](https://microbadger.com/images/cirrusci/android-sdk:29) [![](https://images.microbadger.com/badges/image/cirrusci/android-sdk:29.svg)](https://microbadger.com/images/cirrusci/android-sdk:29)
+
+[![](https://images.microbadger.com/badges/version/cirrusci/android-sdk:30.svg)](https://microbadger.com/images/cirrusci/android-sdk:30) [![](https://images.microbadger.com/badges/image/cirrusci/android-sdk:30.svg)](https://microbadger.com/images/cirrusci/android-sdk:30)
  
