@@ -5,6 +5,7 @@ environment:
 docker_builder:
   name: Linux
   build_tools_script: docker build --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
+  build_sdk_script: docker build --cache-from cirrusci/android-sdk:29 --tag cirrusci/android-sdk:30 sdk/29
   build_sdk_script: docker build --cache-from cirrusci/android-sdk:30 --tag cirrusci/android-sdk:30 sdk/30
   push_script: ./scripts/push_docker.sh
 
