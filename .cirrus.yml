@@ -15,5 +15,6 @@ docker_builder:
   platform: windows
   os_version: 2019
   build_tools_script: docker build --cache-from cirrusci/android-sdk:tools-windowsservercore-2019 --tag cirrusci/android-sdk:tools-windowsservercore-2019 sdk\tools-windowsservercore-2019
-  build_sdk_script: docker build --cache-from cirrusci/android-sdk:30-windowsservercore-2019 --tag cirrusci/android-sdk:30-windowsservercore-2019 sdk\30-windowsservercore-2019
+  build_sdk_script: docker build --cache-from cirrusci/android-sdk:29-windowsservercore-2019 --tag cirrusci/android-sdk:29-windowsservercore-2019 sdk\29-windowsservercore-2019
+  build_next_sdk_script: docker build --cache-from cirrusci/android-sdk:30-windowsservercore-2019 --tag cirrusci/android-sdk:30-windowsservercore-2019 sdk\30-windowsservercore-2019
   push_script: ./scripts/push_docker.bat
