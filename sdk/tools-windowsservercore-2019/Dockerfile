@@ -7,8 +7,8 @@ ENV JAVA_HOME C:\\Program Files\\Java\\jdk1.8.0_211
 ENV JAVA_VERSION 8.0.211
 
 RUN powershell.exe -Command \
-    choco install -y jdk8 --version $env:JAVA_VERSION; \
-    choco install -y 7zip; \
+    choco install -y --no-progress jdk8 --version $env:JAVA_VERSION ; \
+    choco install -y --no-progress 7zip ; \
     Remove-Item C:\ProgramData\chocolatey\logs -Force -Recurse \
     mkdir $env:ANDROID_HOME; \
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; \
