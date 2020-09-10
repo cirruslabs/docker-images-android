@@ -1,7 +1,6 @@
 FROM ubuntu:focal
 
 ENV ANDROID_HOME=/opt/android-sdk-linux \
-    HOME=/home/cirrus \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     LANGUAGE=en_US:en
@@ -10,7 +9,7 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
     PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/tools/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
 
 # comes from https://developer.android.com/studio/#command-tools
-ENV ANDROID_SDK_TOOLS_VERSION 6514223
+ENV ANDROID_SDK_TOOLS_VERSION 6609375
 
 RUN set -o xtrace \
     && cd /opt \
@@ -34,15 +33,7 @@ RUN set -o xtrace \
     && touch /root/.android/repositories.cfg \
     && sdkmanager platform-tools \
     && sdkmanager emulator \
-    && echo "Adding cirrus user and group" \
-    && useradd --system --uid 1000 --shell /bin/bash --create-home cirrus \
-    && adduser cirrus sudo \
-    && mkdir -p /home/cirrus/.android \
-    && touch /home/cirrus/.android/repositories.cfg \
-    && chown --recursive cirrus:cirrus /home/cirrus \
-    && chown --recursive cirrus:cirrus ${ANDROID_HOME} \
+    && mkdir -p /root/.android \
+    && touch /root/.android/repositories.cfg \
     && git config --global user.email "support@cirruslabs.org" \
     && git config --global user.name "Cirrus CI"
-
-USER cirrus
-WORKDIR /home/cirrus
