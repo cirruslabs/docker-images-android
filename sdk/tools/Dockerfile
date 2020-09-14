@@ -1,5 +1,7 @@
 FROM ubuntu:focal
 
+USER root
+
 ENV ANDROID_HOME=/opt/android-sdk-linux \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
@@ -25,6 +27,7 @@ RUN set -o xtrace \
     && wget -q https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_TOOLS_VERSION}_latest.zip -O android-sdk-tools.zip \
     && mkdir -p ${ANDROID_HOME}/cmdline-tools/ \
     && unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}/cmdline-tools/ \
+    && chown -R root:root $ANDROID_HOME \
     && rm android-sdk-tools.zip \
     && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && yes | sdkmanager --licenses \
