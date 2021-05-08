@@ -2,8 +2,15 @@ environment:
   DOCKER_USER_NAME: ENCRYPTED[b75ee3bd0bd835d7d74d2598b54fee3d0b743919a48c87829bf99fab6dd9a296cce88bfa81dd9d660d7c3acbb6e589ce]
   DOCKER_PASSWORD: ENCRYPTED[dcb999313b7216ea7fb1181de5fdac8cdba6ea0d8fdca287f2cc1713c110dbaa9fceafb5ffe0fe8dfde7bbc520abdfae]
 
-docker_builder:
+task:
   name: Linux
+  compute_engine_instance:
+    image_project: cirrus-images
+    image: family/docker-kvm
+    platform: linux
+    cpu: 4
+    memory: 16G
+    nested_virtualization: true
   setup_script:
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
