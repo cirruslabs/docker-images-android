@@ -10,7 +10,6 @@ task:
     platform: linux
     cpu: 4
     memory: 16G
-    nested_virtualization: true
   setup_script:
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
