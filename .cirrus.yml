@@ -2,11 +2,23 @@ environment:
   DOCKER_USER_NAME: ENCRYPTED[b75ee3bd0bd835d7d74d2598b54fee3d0b743919a48c87829bf99fab6dd9a296cce88bfa81dd9d660d7c3acbb6e589ce]
   DOCKER_PASSWORD: ENCRYPTED[dcb999313b7216ea7fb1181de5fdac8cdba6ea0d8fdca287f2cc1713c110dbaa9fceafb5ffe0fe8dfde7bbc520abdfae]
 
-docker_builder:
+task:
   name: Linux
-  build_tools_script: docker build --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker build --cache-from cirrusci/android-sdk:30 --tag cirrusci/android-sdk:30 sdk/30
-  build_ndk_script: docker build --cache-from cirrusci/android-sdk:30-ndk --tag cirrusci/android-sdk:30-ndk sdk/30-ndk
+  compute_engine_instance:
+    image_project: cirrus-images
+    image: family/docker-kvm
+    platform: linux
+    cpu: 4
+    memory: 16G
+  setup_script:
+    - docker buildx create --name multibuilder
+    - docker buildx use multibuilder
+    - docker buildx inspect --bootstrap
+  build_tools_script:
+    - docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.amd64 sdk/tools
+    - docker buildx build --platform linux/arm64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.arm64 sdk/tools
+  build_sdk_script: docker buildx build --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30 --tag cirrusci/android-sdk:30 sdk/30
+  build_ndk_script: docker buildx build --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30-ndk --tag cirrusci/android-sdk:30-ndk sdk/30-ndk
   push_script: ./scripts/push_docker.sh
 
 docker_builder:
