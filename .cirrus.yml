@@ -4,6 +4,7 @@ environment:
 
 task:
   name: Linux
+  only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
   compute_engine_instance:
     image_project: cirrus-images
     image: family/docker-kvm
@@ -19,7 +20,26 @@ task:
     - docker buildx build --platform linux/arm64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.arm64 sdk/tools
   build_sdk_script: docker buildx build --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30 --tag cirrusci/android-sdk:30 sdk/30
   build_ndk_script: docker buildx build --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30-ndk --tag cirrusci/android-sdk:30-ndk sdk/30-ndk
-  push_script: ./scripts/push_docker.sh
+
+task:
+  name: Linux
+  only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
+  compute_engine_instance:
+    image_project: cirrus-images
+    image: family/docker-kvm
+    platform: linux
+    cpu: 4
+    memory: 16G
+  setup_script:
+    - docker buildx create --name multibuilder
+    - docker buildx use multibuilder
+    - docker buildx inspect --bootstrap
+  login_script: docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
+  build_tools_script:
+    - docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.amd64 sdk/tools
+    - docker buildx build --push --platform linux/arm64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.arm64 sdk/tools
+  build_sdk_script: docker buildx build --push --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30 --tag cirrusci/android-sdk:30 sdk/30
+  build_ndk_script: docker buildx build --push --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30-ndk --tag cirrusci/android-sdk:30-ndk sdk/30-ndk
 
 docker_builder:
   skip: "!changesInclude('**/*windows*/**')"
