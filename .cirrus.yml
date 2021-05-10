@@ -15,9 +15,7 @@ task:
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
-  build_tools_script:
-    - docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.amd64 sdk/tools
-    - docker buildx build --platform linux/arm64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.arm64 sdk/tools
+  build_tools_script: docker buildx build --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
   build_sdk_script: docker buildx build --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30 --tag cirrusci/android-sdk:30 sdk/30
   build_ndk_script: docker buildx build --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30-ndk --tag cirrusci/android-sdk:30-ndk sdk/30-ndk
 
@@ -35,9 +33,7 @@ task:
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
   login_script: docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
-  build_tools_script:
-    - docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.amd64 sdk/tools
-    - docker buildx build --push --platform linux/arm64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools --file sdk/tools/Dockerfile.arm64 sdk/tools
+  build_tools_script: docker buildx build --push --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
   build_sdk_script: docker buildx build --push --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30 --tag cirrusci/android-sdk:30 sdk/30
   build_ndk_script: docker buildx build --push --platform linux/amd64,linux/arm64 --cache-from cirrusci/android-sdk:30-ndk --tag cirrusci/android-sdk:30-ndk sdk/30-ndk
 

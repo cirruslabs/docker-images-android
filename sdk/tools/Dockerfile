@@ -36,8 +36,9 @@ RUN set -o xtrace \
     && chmod +x /usr/bin/android-wait-for-emulator \
     && touch /root/.android/repositories.cfg \
     && sdkmanager platform-tools \
-    && sdkmanager emulator \
     && mkdir -p /root/.android \
     && touch /root/.android/repositories.cfg \
     && git config --global user.email "support@cirruslabs.org" \
     && git config --global user.name "Cirrus CI"
+
+RUN if [[ $(uname -m) == "x86_64" ]] ; then sdkmanager emulator ; fi
