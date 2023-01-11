@@ -15,9 +15,9 @@ task:
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
-  build_tools_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/33
-  build_ndk_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
+  build_tools_script: docker buildx build --load --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
+  build_sdk_script: docker buildx build --load --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/33
+  build_ndk_script: docker buildx build --load --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
 
 task:
   name: Linux
