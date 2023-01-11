@@ -7,22 +7,16 @@ docker_builder:
   only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
   setup_script:
     - docker --version
-    - docker buildx create --name multibuilder
-    - docker buildx use multibuilder
-    - docker buildx inspect --bootstrap
-  build_tools_script: docker buildx build --load --platform linux/amd64 --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --load --platform linux/amd64 --tag cirrusci/android-sdk:33 sdk/33
-  build_ndk_script: docker buildx build --load --platform linux/amd64 --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
+  build_tools_script: docker buildx build --load --tag cirrusci/android-sdk:tools sdk/tools
+  build_sdk_script: docker buildx build --load --tag cirrusci/android-sdk:33 sdk/33
+  build_ndk_script: docker buildx build --load --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
 
 docker_builder:
   name: Linux
   only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
   setup_script:
     - docker --version
-    - docker buildx create --name multibuilder
-    - docker buildx use multibuilder
-    - docker buildx inspect --bootstrap
   login_script: docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
-  build_tools_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/33
-  build_ndk_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
+  build_tools_script: docker buildx build --push --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
+  build_sdk_script: docker buildx build --push --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/33
+  build_ndk_script: docker buildx build --push --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
