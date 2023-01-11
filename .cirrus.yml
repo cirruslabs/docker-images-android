@@ -2,33 +2,23 @@ environment:
   DOCKER_USER_NAME: ENCRYPTED[b75ee3bd0bd835d7d74d2598b54fee3d0b743919a48c87829bf99fab6dd9a296cce88bfa81dd9d660d7c3acbb6e589ce]
   DOCKER_PASSWORD: ENCRYPTED[dcb999313b7216ea7fb1181de5fdac8cdba6ea0d8fdca287f2cc1713c110dbaa9fceafb5ffe0fe8dfde7bbc520abdfae]
 
-task:
+docker_builder:
   name: Linux
   only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
-  compute_engine_instance:
-    image_project: cirrus-images
-    image: family/docker-kvm
-    platform: linux
-    cpu: 4
-    memory: 16G
   setup_script:
+    - docker --version
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
-  build_tools_script: docker buildx build --load --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --load --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 --tag docker.io/cirrusci/android-sdk:33 sdk/33
-  build_ndk_script: docker buildx build --load --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
+  build_tools_script: docker buildx build --load --platform linux/amd64 --tag cirrusci/android-sdk:tools sdk/tools
+  build_sdk_script: docker buildx build --load --platform linux/amd64 --tag cirrusci/android-sdk:33 sdk/33
+  build_ndk_script: docker buildx build --load --platform linux/amd64 --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
 
-task:
+docker_builder:
   name: Linux
   only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
-  compute_engine_instance:
-    image_project: cirrus-images
-    image: family/docker-kvm
-    platform: linux
-    cpu: 4
-    memory: 16G
   setup_script:
+    - docker --version
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
