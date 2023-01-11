@@ -16,8 +16,8 @@ task:
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
   build_tools_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/30
-  build_ndk_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/30-ndk
+  build_sdk_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/33
+  build_ndk_script: docker buildx build --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
 
 task:
   name: Linux
@@ -34,5 +34,5 @@ task:
     - docker buildx inspect --bootstrap
   login_script: docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
   build_tools_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/30
-  build_ndk_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/30-ndk
+  build_sdk_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/33
+  build_ndk_script: docker buildx build --push --platform linux/amd64 --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
