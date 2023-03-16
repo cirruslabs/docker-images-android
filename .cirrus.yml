@@ -1,22 +1,50 @@
-environment:
-  DOCKER_USER_NAME: ENCRYPTED[b75ee3bd0bd835d7d74d2598b54fee3d0b743919a48c87829bf99fab6dd9a296cce88bfa81dd9d660d7c3acbb6e589ce]
-  DOCKER_PASSWORD: ENCRYPTED[dcb999313b7216ea7fb1181de5fdac8cdba6ea0d8fdca287f2cc1713c110dbaa9fceafb5ffe0fe8dfde7bbc520abdfae]
-
 docker_builder:
-  name: Linux
+  name: Build
   only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
+  version_script: docker --version
   setup_script:
-    - docker --version
-  build_tools_script: docker buildx build --load --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --load --tag cirrusci/android-sdk:33 sdk/33
-  build_ndk_script: docker buildx build --load --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
+    - docker buildx create --name multibuilder
+    - docker buildx use multibuilder
+    - docker buildx inspect --bootstrap
+  build_tools_script: |
+    docker buildx build --load --platform linux/amd64,linux/arm64 \
+      --cache-from  ghcr.io/cirruslabs/android-sdk:tools \
+      --tag ghcr.io/cirruslabs/android-sdk:tools \
+      sdk/tools
+  build_sdk_script: |
+    docker buildx build --load --platform linux/amd64,linux/arm64 \
+      --cache-from  ghcr.io/cirruslabs/android-sdk:33 \
+      --tag ghcr.io/cirruslabs/android-sdk:33 \
+      sdk/33
+  build_ndk_script: |
+    docker buildx build --load --platform linux/amd64,linux/arm64 \
+      --cache-from  ghcr.io/cirruslabs/android-sdk:33-ndk \
+      --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
+      sdk/33-ndk
 
 docker_builder:
-  name: Linux
-  only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
+  name: Push
+  env:
+    GITHUB_TOKEN: ENCRYPTED[!82ed873afdf627284305afef4958c85a8f73127b09978a9786ac521559630ea6c9a5ab6e7f8315abf9ead09b6eff6eae!]
+  version_script: docker --version
+  login_script:
+    - echo $GITHUB_TOKEN | docker login ghcr.io -u fkorotkov --password-stdin
   setup_script:
-    - docker --version
-  login_script: docker login --username $DOCKER_USER_NAME --password $DOCKER_PASSWORD
-  build_tools_script: docker buildx build --push --cache-from cirrusci/android-sdk:tools --tag cirrusci/android-sdk:tools sdk/tools
-  build_sdk_script: docker buildx build --push --cache-from cirrusci/android-sdk:33 --tag cirrusci/android-sdk:33 sdk/33
-  build_ndk_script: docker buildx build --push --cache-from cirrusci/android-sdk:33-ndk --tag cirrusci/android-sdk:33-ndk sdk/33-ndk
+    - docker buildx create --name multibuilder
+    - docker buildx use multibuilder
+    - docker buildx inspect --bootstrap
+  build_tools_script: |
+    docker buildx build --push --platform linux/amd64,linux/arm64 \
+      --cache-from  ghcr.io/cirruslabs/android-sdk:tools \
+      --tag ghcr.io/cirruslabs/android-sdk:tools \
+      sdk/tools
+  build_sdk_script: |
+    docker buildx build --push --platform linux/amd64,linux/arm64 \
+      --cache-from  ghcr.io/cirruslabs/android-sdk:33 \
+      --tag ghcr.io/cirruslabs/android-sdk:33 \
+      sdk/33
+  build_ndk_script: |
+    docker buildx build --push --platform linux/amd64,linux/arm64 \
+      --cache-from  ghcr.io/cirruslabs/android-sdk:33-ndk \
+      --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
+      sdk/33-ndk
