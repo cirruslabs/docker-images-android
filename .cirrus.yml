@@ -7,23 +7,24 @@ docker_builder:
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
   build_tools_script: |
-    docker buildx build --load --platform linux/amd64,linux/arm64 \
+    docker buildx build --load \
       --cache-from  ghcr.io/cirruslabs/android-sdk:tools \
       --tag ghcr.io/cirruslabs/android-sdk:tools \
       sdk/tools
   build_sdk_script: |
-    docker buildx build --load --platform linux/amd64,linux/arm64 \
+    docker buildx build --load \
       --cache-from  ghcr.io/cirruslabs/android-sdk:33 \
       --tag ghcr.io/cirruslabs/android-sdk:33 \
       sdk/33
   build_ndk_script: |
-    docker buildx build --load --platform linux/amd64,linux/arm64 \
+    docker buildx build --load \
       --cache-from  ghcr.io/cirruslabs/android-sdk:33-ndk \
       --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
       sdk/33-ndk
 
 docker_builder:
   name: Push
+  only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
   env:
     GITHUB_TOKEN: ENCRYPTED[!82ed873afdf627284305afef4958c85a8f73127b09978a9786ac521559630ea6c9a5ab6e7f8315abf9ead09b6eff6eae!]
   version_script: docker --version
@@ -34,17 +35,17 @@ docker_builder:
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
   build_tools_script: |
-    docker buildx build --push --platform linux/amd64,linux/arm64 \
+    docker buildx build --push \
       --cache-from  ghcr.io/cirruslabs/android-sdk:tools \
       --tag ghcr.io/cirruslabs/android-sdk:tools \
       sdk/tools
   build_sdk_script: |
-    docker buildx build --push --platform linux/amd64,linux/arm64 \
+    docker buildx build --push \
       --cache-from  ghcr.io/cirruslabs/android-sdk:33 \
       --tag ghcr.io/cirruslabs/android-sdk:33 \
       sdk/33
   build_ndk_script: |
-    docker buildx build --push --platform linux/amd64,linux/arm64 \
+    docker buildx build --push \
       --cache-from  ghcr.io/cirruslabs/android-sdk:33-ndk \
       --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
       sdk/33-ndk
