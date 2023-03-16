@@ -1,5 +1,7 @@
 FROM ubuntu:22.04
 
+LABEL org.opencontainers.image.source=https://github.com/cirruslabs/docker-images-android
+
 USER root
 
 ENV ANDROID_HOME=/opt/android-sdk-linux \
