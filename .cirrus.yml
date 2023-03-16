@@ -8,17 +8,14 @@ docker_builder:
     - docker buildx inspect --bootstrap
   build_tools_script: |
     docker buildx build --load \
-      --cache-from  ghcr.io/cirruslabs/android-sdk:tools \
       --tag ghcr.io/cirruslabs/android-sdk:tools \
       sdk/tools
   build_sdk_script: |
     docker buildx build --load \
-      --cache-from  ghcr.io/cirruslabs/android-sdk:33 \
       --tag ghcr.io/cirruslabs/android-sdk:33 \
       sdk/33
   build_ndk_script: |
     docker buildx build --load \
-      --cache-from  ghcr.io/cirruslabs/android-sdk:33-ndk \
       --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
       sdk/33-ndk
 
@@ -36,16 +33,13 @@ docker_builder:
     - docker buildx inspect --bootstrap
   build_tools_script: |
     docker buildx build --push \
-      --cache-from  ghcr.io/cirruslabs/android-sdk:tools \
       --tag ghcr.io/cirruslabs/android-sdk:tools \
       sdk/tools
   build_sdk_script: |
     docker buildx build --push \
-      --cache-from  ghcr.io/cirruslabs/android-sdk:33 \
       --tag ghcr.io/cirruslabs/android-sdk:33 \
       sdk/33
   build_ndk_script: |
     docker buildx build --push \
-      --cache-from  ghcr.io/cirruslabs/android-sdk:33-ndk \
       --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
       sdk/33-ndk
