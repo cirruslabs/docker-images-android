@@ -1,4 +1,4 @@
-FROM cirrusci/android-sdk:tools
+FROM ghcr.io/cirruslabs/android-sdk:tools
 
 # https://developer.android.com/studio/releases/build-tools
 ENV ANDROID_PLATFORM_VERSION 33
