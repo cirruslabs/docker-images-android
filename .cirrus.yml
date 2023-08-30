@@ -12,12 +12,12 @@ docker_builder:
       sdk/tools
   build_sdk_script: |
     docker buildx build --load \
-      --tag ghcr.io/cirruslabs/android-sdk:33 \
-      sdk/33
+      --tag ghcr.io/cirruslabs/android-sdk:34 \
+      sdk/34
   build_ndk_script: |
     docker buildx build --load \
-      --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
-      sdk/33-ndk
+      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
+      sdk/34-ndk
 
 docker_builder:
   name: Push
@@ -37,9 +37,9 @@ docker_builder:
       sdk/tools
   build_sdk_script: |
     docker buildx build --push \
-      --tag ghcr.io/cirruslabs/android-sdk:33 \
-      sdk/33
+      --tag ghcr.io/cirruslabs/android-sdk:34 \
+      sdk/34
   build_ndk_script: |
     docker buildx build --push \
-      --tag ghcr.io/cirruslabs/android-sdk:33-ndk \
-      sdk/33-ndk
+      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
+      sdk/34-ndk

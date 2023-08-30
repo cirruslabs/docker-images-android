@@ -1,4 +1,4 @@
-FROM ghcr.io/cirruslabs/android-sdk:33
+FROM ghcr.io/cirruslabs/android-sdk:34
 
 # https://developer.android.com/ndk/downloads
 ENV ANDROID_NDK_VERSION 25.2.9519653
