@@ -7,15 +7,15 @@ docker_builder:
     - docker buildx use multibuilder
     - docker buildx inspect --bootstrap
   build_tools_script: |
-    docker buildx build --platform linux/amd64,linux/arm64 --load \
+    docker buildx build --platform linux/amd64,linux/arm64 \
       --tag ghcr.io/cirruslabs/android-sdk:tools \
       sdk/tools
   build_sdk_script: |
-    docker buildx build --platform linux/amd64,linux/arm64 --load \
+    docker buildx build --platform linux/amd64,linux/arm64 \
       --tag ghcr.io/cirruslabs/android-sdk:34 \
       sdk/34
   build_ndk_script: |
-    docker buildx build --platform linux/amd64,linux/arm64 --load \
+    docker buildx build --platform linux/amd64,linux/arm64 \
       --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
       sdk/34-ndk
 
