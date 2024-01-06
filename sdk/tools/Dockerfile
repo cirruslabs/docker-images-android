@@ -43,4 +43,4 @@ RUN set -o xtrace \
     && git config --global user.email "support@cirruslabs.org" \
     && git config --global user.name "Cirrus CI"
 
-RUN if [[ $(uname -m) == "x86_64" ]] ; then sdkmanager emulator ; fi
+RUN sdkmanager emulator
