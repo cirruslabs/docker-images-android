@@ -18,6 +18,7 @@ ENV ANDROID_SDK_TOOLS_VERSION 10406996
 RUN set -o xtrace \
     && cd /opt \
     && apt-get update \
+    && apt-get install -y jq \
     && apt-get install -y openjdk-17-jdk \
     && apt-get install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev --no-install-recommends \
     # for x86 emulators
