@@ -1,10 +1,23 @@
-# Android SDK Docker Images
+# Docker images with Android SDK
 
-[![Build Status](https://api.cirrus-ci.com/github/cirruslabs/docker-images-android.svg)](https://cirrus-ci.com/github/cirruslabs/docker-images-android)
- 
-[![](https://images.microbadger.com/badges/version/cirrusci/android-sdk:tools.svg)](https://microbadger.com/images/cirrusci/android-sdk:tools) [![](https://images.microbadger.com/badges/image/cirrusci/android-sdk:tools.svg)](https://microbadger.com/images/cirrusci/android-sdk:tools)
+[![Build status][build_badge]][build_link]
 
-[![](https://images.microbadger.com/badges/version/cirrusci/android-sdk:34.svg)](https://microbadger.com/images/cirrusci/android-sdk:34) [![](https://images.microbadger.com/badges/image/cirrusci/android-sdk:34.svg)](https://microbadger.com/images/cirrusci/android-sdk:34)
+You can either [use it in CI](https://cirrus-ci.org/examples/#android) or run
+locally via Docker:
 
-[![](https://images.microbadger.com/badges/version/cirrusci/android-sdk:34-ndk.svg)](https://microbadger.com/images/cirrusci/android-sdk:34-ndk) [![](https://images.microbadger.com/badges/image/cirrusci/android-sdk:34-ndk.svg)](https://microbadger.com/images/cirrusci/android-sdk:34-ndk)
- 
+```console
+docker run --rm -it \
+  --volume "$PWD:/build" \
+  --workdir /build \
+  ghcr.io/cirruslabs/android-sdk:34 \
+  ./gradlew :app:assembleDebug
+```
+
+The example above mounts current working directory and runs a Gradle build.
+
+## GitHub Container Registry
+
+https://github.com/cirruslabs/docker-images-android/pkgs/container/android-sdk
+
+[build_badge]: https://api.cirrus-ci.com/github/cirruslabs/docker-images-android.svg
+[build_link]: https://cirrus-ci.com/github/cirruslabs/docker-images-android
