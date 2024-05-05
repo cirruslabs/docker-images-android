@@ -43,3 +43,38 @@ docker_builder:
     docker buildx build --platform linux/amd64,linux/arm64 --push \
       --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
       sdk/34-ndk
+
+task:
+  name: Smoke Test
+  container:
+    dockerfile: sdk/tools/Dockerfile
+    cpu: 4
+    memory: 8G
+  env:
+    EMULATOR_IMAGE: system-images;android-34;aosp_atd;x86_64
+  clone_script: |
+    git clone https://github.com/android/testing-samples.git
+  install_android_image_script:
+    sdkmanager --install "$EMULATOR_IMAGE"
+  create_emulator_script: |
+    avdmanager -s create avd -n MyAVD -k "$EMULATOR_IMAGE"
+    cat << EOF >> ~/.android/avd/MyAVD.avd/config.ini
+    hw.cpu.ncore=2
+    hw.gpu.enabled=yes
+    hw.gpu.mode=swiftshader_indirect
+    hw.ramSize=3072
+    disk.dataPartition.size=6G
+    vm.heapSize=576
+    hw.lcd.density=440
+    hw.lcd.height=2220
+    hw.lcd.width=1080
+    EOF
+  start_emulator_background_script:
+    - $ANDROID_HOME/emulator/emulator @MyAVD -verbose -no-snapshot-save -no-window -noaudio -no-boot-anim -accel on
+  wait_for_emulator_script:
+    - android-wait-for-emulator
+  run_tests_script: |
+    cd testing-samples
+    cd runner/AndroidTestOrchestratorSample
+    ./gradlew :app:connectedAndroidTest
+
