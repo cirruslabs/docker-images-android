@@ -47,7 +47,7 @@ docker_builder:
 task:
   name: Smoke Test
   container:
-    dockerfile: sdk/tools/Dockerfile
+    dockerfile: sdk/34/Dockerfile
     cpu: 4
     memory: 8G
   env:
