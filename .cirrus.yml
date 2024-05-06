@@ -50,6 +50,7 @@ task:
     dockerfile: sdk/34/Dockerfile
     cpu: 4
     memory: 8G
+    kvm: "true"
   env:
     EMULATOR_IMAGE: system-images;android-34;aosp_atd;x86_64
   clone_script: |
