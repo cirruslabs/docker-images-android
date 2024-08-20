@@ -14,14 +14,18 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
 
 # comes from https://developer.android.com/studio/#command-tools
 # see also https://stackoverflow.com/a/78890086/7009800
-ENV ANDROID_SDK_TOOLS_VERSION 10406996
-ENV OPENJDK_PACKAGE=openjdk-17-jdk
+
+ARG android_clt_version
+ARG jdk_package
+
+ENV ANDROID_SDK_TOOLS_VERSION=${android_clt_version}
+ENV JDK_PACKAGE=${jdk_package}
 
 RUN set -o xtrace \
     && cd /opt \
     && apt-get update \
     && apt-get install -y jq \
-    && apt-get install -y openjdk-17-jdk \
+    && apt-get install -y ${JDK_PACKAGE} \
     && apt-get install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev --no-install-recommends \
     # for x86 emulators
     && apt-get install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2t64 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
