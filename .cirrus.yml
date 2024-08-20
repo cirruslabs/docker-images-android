@@ -2,6 +2,17 @@ docker_builder:
   name: Build
   only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
   version_script: docker --version
+  env:
+    matrix:
+      # obtained with https://stackoverflow.com/a/78890086/7009800
+      ANDROID_CLT_VERSION: 9123335 # v8, latest compatible with JDK 8+
+      ANDROID_CLT_VERSION: 9862592 # v10, latest compatible with JDK 11+
+      ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
+    matrix:
+      JDK_PACKAGE: openjdk-8-jdk
+      JDK_PACKAGE: openjdk-11-jdk
+      JDK_PACKAGE: openjdk-17-jdk
+      JDK_PACKAGE: openjdk-21-jdk
   setup_script:
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
@@ -9,6 +20,8 @@ docker_builder:
   build_tools_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
       --tag ghcr.io/cirruslabs/android-sdk:tools \
+      --build-arg android_clt_version=$ANDROID_CLT_VERSION \
+      --build-arg jdk_package=$JDK_PACKAGE \
       sdk/tools
   build_sdk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
