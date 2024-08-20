@@ -1,24 +1,21 @@
 docker_builder:
   name: Build
-  alias: hehe
   only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
-  version_script: docker --version
   env:
     # Android Command-line tools were obtained with https://stackoverflow.com/a/78890086/7009800
     matrix:
-      ANDROID_CLT_VERSION: 9123335 # v8, latest compatible with JDK 8+
-      JDK_PACKAGE: openjdk-8-jdk
-    matrix:
-      ANDROID_CLT_VERSION: 9862592 # v10, latest compatible with JDK 11+
-      JDK_PACKAGE: openjdk-11-jdk
-    matrix:
-      ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
-      JDK_PACKAGE: openjdk-17-jdk
-    matrix:
-      ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
-      JDK_PACKAGE: openjdk-21-jdk
+      ANDROID_AND_JDK: 9123335:openjdk-8-jdk # CLT v8, latest compatible with JDK 8+
+      ANDROID_AND_JDK: 9862592:openjdk-11-jdk # CLT v10, latest compatible with JDK 11+
+      ANDROID_AND_JDK: 11479570:openjdk-17-jdk # CLT v13, latest compatible with JDK 17+
+      ANDROID_AND_JDK: 11479570:openjdk-21-jdk # CLT v13 but on Java 21
+  export_env_vars_script:
+    - export ANDROID_CLT_VERSION="$(echo $ANDROID_AND_JDK | cut -d ':' -f1)"
+    - export JDK_PACKAGE="$(echo $ANDROID_AND_JDK | cut -d ':' -f2)"
+    - echo "ANDROID_CLT_VERSION=$ANDROID_CLT_VERSION" >> $CIRRUS_ENV
+    - echo "JDK_PACKAGE=$JDK_PACKAGE" >> $CIRRUS_ENV
   info_script:
     - echo "Building Android SDK with Android Command-line tools $ANDROID_CLT_VERSION and JDK $JDK_PACKAGE"
+  version_script: docker --version
   setup_script:
     - docker buildx create --name multibuilder
     - docker buildx use multibuilder
