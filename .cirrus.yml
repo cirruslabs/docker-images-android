@@ -89,6 +89,8 @@ task:
     kvm: "true"
   env:
     EMULATOR_IMAGE: system-images;android-34;aosp_atd;x86_64
+    ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
+    JDK_VERSION: 17
   setup_script: |
     sdkmanager --install "platforms;android-34"
     sdkmanager --install "build-tools;34.0.0"
