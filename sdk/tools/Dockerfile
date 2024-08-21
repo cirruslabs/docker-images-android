@@ -16,10 +16,10 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
 # see also https://stackoverflow.com/a/78890086/7009800
 
 ARG android_clt_version
-ARG jdk_package
+ARG jdk_version
 
 ENV ANDROID_SDK_TOOLS_VERSION=${android_clt_version}
-ENV JDK_PACKAGE=${jdk_package}
+ENV JDK_PACKAGE="openjdk-${jdk_version}-jdk"
 
 RUN set -o xtrace \
     && cd /opt \
