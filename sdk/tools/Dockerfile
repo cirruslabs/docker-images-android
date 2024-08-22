@@ -14,9 +14,8 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
 
 # comes from https://developer.android.com/studio/#command-tools
 # see also https://stackoverflow.com/a/78890086/7009800
-
-ARG android_clt_version
-ARG jdk_version
+ARG android_clt_version=11479570
+ARG jdk_version=17
 
 ENV ANDROID_SDK_TOOLS_VERSION=${android_clt_version}
 ENV JDK_PACKAGE="openjdk-${jdk_version}-jdk"
