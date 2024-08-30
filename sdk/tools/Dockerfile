@@ -50,4 +50,4 @@ RUN set -o xtrace \
     && git config --global user.name "Cirrus CI"
 
 # emulator is not available on linux/arm64 (https://issuetracker.google.com/issues/227219818)
-RUN if [ $(uname -m) == "x86_64" ]; then sdkmanager emulator ; fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then sdkmanager emulator ; fi
