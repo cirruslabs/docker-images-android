@@ -1,5 +1,5 @@
 docker_builder:
-  name: Build
+  name: Build images with JDK $JDK_VERSION
   only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
   env:
     # Android Command-line tools were obtained with https://stackoverflow.com/a/78890086/7009800
@@ -41,7 +41,7 @@ docker_builder:
       sdk/34-ndk
 
 docker_builder:
-  name: Push
+  name: Build and push images with JDK $JDK_VERSION
   only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
   env:
     # Android Command-line tools were obtained with https://stackoverflow.com/a/78890086/7009800
@@ -83,6 +83,28 @@ docker_builder:
       --build-arg jdk_version=$JDK_VERSION \
       --tag ghcr.io/cirruslabs/android-sdk:34-ndk-jdk${JDK_VERSION} \
       sdk/34-ndk
+
+docker_builder:
+  name: Push tags of default images
+  only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
+  depends_on:
+    - Build and push images with JDK 17
+  env:
+    GITHUB_TOKEN: ENCRYPTED[!82ed873afdf627284305afef4958c85a8f73127b09978a9786ac521559630ea6c9a5ab6e7f8315abf9ead09b6eff6eae!]
+  login_script:
+    - echo $GITHUB_TOKEN | docker login ghcr.io -u fkorotkov --password-stdin
+  pull_images_script: |
+    docker pull ghcr.io/cirruslabs/android-sdk:tools-jdk17
+    docker pull ghcr.io/cirruslabs/android-sdk:34-jdk17
+    docker pull ghcr.io/cirruslabs/android-sdk:34-ndk-jdk17
+  create_tags_script: |
+    docker tag ghcr.io/cirruslabs/android-sdk:tools-jdk17 ghcr.io/cirruslabs/android-sdk:tools
+    docker tag ghcr.io/cirruslabs/android-sdk:34-jdk17 ghcr.io/cirruslabs/android-sdk:tools
+    docker tag ghcr.io/cirruslabs/android-sdk:34-ndk-jdk17 ghcr.io/cirruslabs/android-sdk:tools
+  push_tags_script: |
+    docker push ghcr.io/cirruslabs/android-sdk:tools
+    docker push ghcr.io/cirruslabs/android-sdk:34
+    docker push ghcr.io/cirruslabs/android-sdk:34-ndk
 
 task:
   name: Smoke Test
