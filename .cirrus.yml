@@ -31,11 +31,13 @@ docker_builder:
       sdk/tools
   build_sdk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
-      --tag ghcr.io/cirruslabs/android-sdk:34 \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-jdk${JDK_VERSION} \
       sdk/34
   build_ndk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
-      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-ndk-jdk${JDK_VERSION} \
       sdk/34-ndk
 
 docker_builder:
@@ -73,11 +75,13 @@ docker_builder:
       sdk/tools
   build_sdk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 --push \
-      --tag ghcr.io/cirruslabs/android-sdk:34 \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-jdk${JDK_VERSION} \
       sdk/34
   build_ndk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 --push \
-      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-ndk-jdk${JDK_VERSION} \
       sdk/34-ndk
 
 task:
@@ -119,4 +123,3 @@ task:
     cd testing-samples
     cd runner/AndroidTestOrchestratorSample
     ./gradlew :app:connectedAndroidTest
-
