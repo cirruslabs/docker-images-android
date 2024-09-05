@@ -1,6 +1,23 @@
 docker_builder:
-  name: Build
+  name: Build images with JDK $JDK_VERSION
   only_if: $CIRRUS_BRANCH != $CIRRUS_DEFAULT_BRANCH
+  env:
+    # Android Command-line tools were obtained with https://stackoverflow.com/a/78890086/7009800
+    matrix:
+      - ANDROID_CLT_VERSION: 9123335 # v8, latest compatible with JDK 8+
+        JDK_VERSION: 8
+      - ANDROID_CLT_VERSION: 9862592 # v10, latest compatible with JDK 11+
+        JDK_VERSION: 11
+      - ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
+        JDK_VERSION: 17
+      - ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
+        JDK_VERSION: 21
+  export_env_vars_script:
+    - echo "ANDROID_CLT_VERSION=$ANDROID_CLT_VERSION" >> $CIRRUS_ENV
+    - echo "JDK_VERSION=$JDK_VERSION" >> $CIRRUS_ENV
+  info_script:
+    - docker --version
+    - echo "Building Android SDK with Android Command-line tools $ANDROID_CLT_VERSION and JDK $JDK_VERSION"
   version_script: docker --version
   setup_script:
     - docker buildx create --name multibuilder
@@ -8,23 +25,42 @@ docker_builder:
     - docker buildx inspect --bootstrap
   build_tools_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
-      --tag ghcr.io/cirruslabs/android-sdk:tools \
+      --build-arg android_clt_version=$ANDROID_CLT_VERSION \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:tools-jdk${JDK_VERSION} \
       sdk/tools
   build_sdk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
-      --tag ghcr.io/cirruslabs/android-sdk:34 \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-jdk${JDK_VERSION} \
       sdk/34
   build_ndk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
-      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-ndk-jdk${JDK_VERSION} \
       sdk/34-ndk
 
 docker_builder:
-  name: Push
+  name: Build and push images with JDK $JDK_VERSION
   only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
   env:
+    # Android Command-line tools were obtained with https://stackoverflow.com/a/78890086/7009800
+    matrix:
+      - ANDROID_CLT_VERSION: 9123335 # v8, latest compatible with JDK 8+
+        JDK_VERSION: 8
+      - ANDROID_CLT_VERSION: 9862592 # v10, latest compatible with JDK 11+
+        JDK_VERSION: 11
+      - ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
+        JDK_VERSION: 17
+      - ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
+        JDK_VERSION: 21
     GITHUB_TOKEN: ENCRYPTED[!82ed873afdf627284305afef4958c85a8f73127b09978a9786ac521559630ea6c9a5ab6e7f8315abf9ead09b6eff6eae!]
-  version_script: docker --version
+  export_env_vars_script:
+    - echo "ANDROID_CLT_VERSION=$ANDROID_CLT_VERSION" >> $CIRRUS_ENV
+    - echo "JDK_VERSION=$JDK_VERSION" >> $CIRRUS_ENV
+  info_script:
+    - docker --version
+    - echo "Building Android SDK with Android Command-line tools $ANDROID_CLT_VERSION and JDK $JDK_VERSION"
   login_script:
     - echo $GITHUB_TOKEN | docker login ghcr.io -u fkorotkov --password-stdin
   setup_script:
@@ -33,16 +69,42 @@ docker_builder:
     - docker buildx inspect --bootstrap
   build_tools_script: |
     docker buildx build --platform linux/amd64,linux/arm64 --push \
-      --tag ghcr.io/cirruslabs/android-sdk:tools \
+      --build-arg android_clt_version=$ANDROID_CLT_VERSION \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:tools-jdk${JDK_VERSION} \
       sdk/tools
   build_sdk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 --push \
-      --tag ghcr.io/cirruslabs/android-sdk:34 \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-jdk${JDK_VERSION} \
       sdk/34
   build_ndk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 --push \
-      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
+      --build-arg jdk_version=$JDK_VERSION \
+      --tag ghcr.io/cirruslabs/android-sdk:34-ndk-jdk${JDK_VERSION} \
       sdk/34-ndk
+
+docker_builder:
+  name: Push tags of default images
+  only_if: $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH
+  depends_on:
+    - Build and push images with JDK 17
+  env:
+    GITHUB_TOKEN: ENCRYPTED[!82ed873afdf627284305afef4958c85a8f73127b09978a9786ac521559630ea6c9a5ab6e7f8315abf9ead09b6eff6eae!]
+  login_script:
+    - echo $GITHUB_TOKEN | docker login ghcr.io -u fkorotkov --password-stdin
+  pull_images_script: |
+    docker pull ghcr.io/cirruslabs/android-sdk:tools-jdk17
+    docker pull ghcr.io/cirruslabs/android-sdk:34-jdk17
+    docker pull ghcr.io/cirruslabs/android-sdk:34-ndk-jdk17
+  create_tags_script: |
+    docker tag ghcr.io/cirruslabs/android-sdk:tools-jdk17 ghcr.io/cirruslabs/android-sdk:tools
+    docker tag ghcr.io/cirruslabs/android-sdk:34-jdk17 ghcr.io/cirruslabs/android-sdk:tools
+    docker tag ghcr.io/cirruslabs/android-sdk:34-ndk-jdk17 ghcr.io/cirruslabs/android-sdk:tools
+  push_tags_script: |
+    docker push ghcr.io/cirruslabs/android-sdk:tools
+    docker push ghcr.io/cirruslabs/android-sdk:34
+    docker push ghcr.io/cirruslabs/android-sdk:34-ndk
 
 task:
   name: Smoke Test
@@ -53,6 +115,8 @@ task:
     kvm: "true"
   env:
     EMULATOR_IMAGE: system-images;android-34;aosp_atd;x86_64
+    ANDROID_CLT_VERSION: 11479570 # v13, latest compatible with JDK 17+
+    JDK_VERSION: 17
   setup_script: |
     sdkmanager --install "platforms;android-34"
     sdkmanager --install "build-tools;34.0.0"
@@ -81,4 +145,3 @@ task:
     cd testing-samples
     cd runner/AndroidTestOrchestratorSample
     ./gradlew :app:connectedAndroidTest
-

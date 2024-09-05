@@ -1,4 +1,6 @@
-FROM ghcr.io/cirruslabs/android-sdk:tools
+ARG jdk_version=17
+
+FROM ghcr.io/cirruslabs/android-sdk:tools-jdk${jdk_version}
 
 # https://developer.android.com/studio/releases/build-tools
 ENV ANDROID_PLATFORM_VERSION 34

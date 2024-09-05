@@ -13,13 +13,18 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
     PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
 
 # comes from https://developer.android.com/studio/#command-tools
-ENV ANDROID_SDK_TOOLS_VERSION 10406996
+# see also https://stackoverflow.com/a/78890086/7009800
+ARG android_clt_version=11479570
+ARG jdk_version=17
+
+ENV ANDROID_SDK_TOOLS_VERSION=${android_clt_version}
+ENV JDK_PACKAGE="openjdk-${jdk_version}-jdk"
 
 RUN set -o xtrace \
     && cd /opt \
     && apt-get update \
     && apt-get install -y jq \
-    && apt-get install -y openjdk-17-jdk \
+    && apt-get install -y ${JDK_PACKAGE} \
     && apt-get install -y sudo wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev --no-install-recommends \
     # for x86 emulators
     && apt-get install -y libxtst6 libnss3-dev libnspr4 libxss1 libasound2t64 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
@@ -48,4 +53,4 @@ RUN set -o xtrace \
     && git config --global user.name "Cirrus CI"
 
 # emulator is not available on linux/arm64 (https://issuetracker.google.com/issues/227219818)
-RUN if [ $(uname -m) == "x86_64" ]; then sdkmanager emulator ; fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then sdkmanager emulator ; fi
