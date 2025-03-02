@@ -9,7 +9,7 @@ locally via Docker:
 docker run --rm -it \
   --volume "$PWD:/build" \
   --workdir /build \
-  ghcr.io/cirruslabs/android-sdk:34 \
+  ghcr.io/cirruslabs/android-sdk:35 \
   ./gradlew :app:assembleDebug
 ```
 

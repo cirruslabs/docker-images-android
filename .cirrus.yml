@@ -12,12 +12,12 @@ docker_builder:
       sdk/tools
   build_sdk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
-      --tag ghcr.io/cirruslabs/android-sdk:34 \
-      sdk/34
+      --tag ghcr.io/cirruslabs/android-sdk:35 \
+      sdk/35
   build_ndk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 \
-      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
-      sdk/34-ndk
+      --tag ghcr.io/cirruslabs/android-sdk:35-ndk \
+      sdk/35-ndk
 
 docker_builder:
   name: Push
@@ -37,12 +37,12 @@ docker_builder:
       sdk/tools
   build_sdk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 --push \
-      --tag ghcr.io/cirruslabs/android-sdk:34 \
-      sdk/34
+      --tag ghcr.io/cirruslabs/android-sdk:35 \
+      sdk/35
   build_ndk_script: |
     docker buildx build --platform linux/amd64,linux/arm64 --push \
-      --tag ghcr.io/cirruslabs/android-sdk:34-ndk \
-      sdk/34-ndk
+      --tag ghcr.io/cirruslabs/android-sdk:35-ndk \
+      sdk/35-ndk
 
 task:
   name: Smoke Test
@@ -52,10 +52,10 @@ task:
     memory: 8G
     kvm: "true"
   env:
-    EMULATOR_IMAGE: system-images;android-34;aosp_atd;x86_64
+    EMULATOR_IMAGE: system-images;android-35;aosp_atd;x86_64
   setup_script: |
-    sdkmanager --install "platforms;android-34"
-    sdkmanager --install "build-tools;34.0.0"
+    sdkmanager --install "platforms;android-35"
+    sdkmanager --install "build-tools;35.0.0"
   clone_script: |
     git clone https://github.com/android/testing-samples.git
   install_android_image_script:
