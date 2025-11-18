@@ -13,7 +13,7 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
     PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
 
 # comes from https://developer.android.com/studio/#command-line-tools-only
-ENV ANDROID_SDK_TOOLS_VERSION 11076708
+ENV ANDROID_SDK_TOOLS_VERSION 13114758
 
 RUN set -o xtrace \
     && cd /opt \
